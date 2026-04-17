@@ -1,4 +1,4 @@
-module github.com/YOUR_USERNAME/ad-generated-contracts
+module github.com/Aidana2007/ad-generated-contracts
 
 go 1.25.0
 
