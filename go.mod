@@ -1,4 +1,4 @@
-module assignment/generated-contracts
+module github.com/YOUR_USERNAME/ad-generated-contracts
 
 go 1.25.0
 
