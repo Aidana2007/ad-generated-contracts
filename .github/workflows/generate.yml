@@ -38,10 +38,10 @@ jobs:
       - name: Generate code
         run: |
           protoc -I=./protos \
-            --go_out=. \
-            --go-grpc_out=. \
-            ./protos/order/v1/order.proto \
-            ./protos/payment/v1/payment.proto
+          --go_out=paths=source_relative:. \
+          --go-grpc_out=paths=source_relative:. \
+           ./protos/order/v1/order.proto \
+           ./protos/payment/v1/payment.proto
 
       - name: Commit and push
         run: |
