@@ -8,6 +8,7 @@ on:
 jobs:
   generate:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -15,7 +16,7 @@ jobs:
           token: ${{ secrets.PAT_TOKEN }}
 
       - name: Clone proto repo
-        run: git clone https://github.com/Aidana2007/ad-proto.git protos
+        run: git clone https://github.com/Aidana2007/ad-proto.git /tmp/protos
 
       - name: Install protoc
         run: |
@@ -31,22 +32,33 @@ jobs:
         run: |
           go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
           go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
-      
+
       - name: Add Go bin to PATH
         run: echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
 
       - name: Generate code
         run: |
-          protoc -I=./protos \
-          --go_out=paths=source_relative:. \
-          --go-grpc_out=paths=source_relative:. \
-           ./protos/order/v1/order.proto \
-           ./protos/payment/v1/payment.proto
+          protoc -I=/tmp/protos \
+            --go_out=paths=source_relative:. \
+            --go-grpc_out=paths=source_relative:. \
+            /tmp/protos/order/v1/order.proto \
+            /tmp/protos/payment/v1/payment.proto
+
+      - name: Cleanup unwanted folders
+        run: |
+          rm -rf protos || true
+          rm -rf github.com || true
+          rm -rf .github/Aidana2007 || true
 
       - name: Commit and push
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add .
-          git commit -m "auto: generate pb.go" || echo "No changes"
-          git push
+
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git add .
+            git commit -m "auto: generate pb.go"
+            git push
+          else
+            echo "No changes to commit"
+          fi
