@@ -26,6 +26,7 @@ type PaymentRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	OrderId       string                 `protobuf:"bytes,1,opt,name=order_id,json=orderId,proto3" json:"order_id,omitempty"`
 	Amount        int64                  `protobuf:"varint,2,opt,name=amount,proto3" json:"amount,omitempty"`
+	CustomerEmail string                 `protobuf:"bytes,3,opt,name=customer_email,json=customerEmail,proto3" json:"customer_email,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -74,6 +75,13 @@ func (x *PaymentRequest) GetAmount() int64 {
 	return 0
 }
 
+func (x *PaymentRequest) GetCustomerEmail() string {
+	if x != nil {
+		return x.CustomerEmail
+	}
+	return ""
+}
+
 type PaymentResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	PaymentId     string                 `protobuf:"bytes,1,opt,name=payment_id,json=paymentId,proto3" json:"payment_id,omitempty"`
@@ -82,6 +90,7 @@ type PaymentResponse struct {
 	Amount        int64                  `protobuf:"varint,4,opt,name=amount,proto3" json:"amount,omitempty"`
 	Status        string                 `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
 	ProcessedAt   *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=processed_at,json=processedAt,proto3" json:"processed_at,omitempty"`
+	CustomerEmail string                 `protobuf:"bytes,7,opt,name=customer_email,json=customerEmail,proto3" json:"customer_email,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -156,6 +165,13 @@ func (x *PaymentResponse) GetProcessedAt() *timestamppb.Timestamp {
 		return x.ProcessedAt
 	}
 	return nil
+}
+
+func (x *PaymentResponse) GetCustomerEmail() string {
+	if x != nil {
+		return x.CustomerEmail
+	}
+	return ""
 }
 
 type ListPaymentsRequest struct {
@@ -259,10 +275,11 @@ var File_payment_v1_payment_proto protoreflect.FileDescriptor
 const file_payment_v1_payment_proto_rawDesc = "" +
 	"\n" +
 	"\x18payment/v1/payment.proto\x12\n" +
-	"payment.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"C\n" +
+	"payment.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"j\n" +
 	"\x0ePaymentRequest\x12\x19\n" +
 	"\border_id\x18\x01 \x01(\tR\aorderId\x12\x16\n" +
-	"\x06amount\x18\x02 \x01(\x03R\x06amount\"\xe1\x01\n" +
+	"\x06amount\x18\x02 \x01(\x03R\x06amount\x12%\n" +
+	"\x0ecustomer_email\x18\x03 \x01(\tR\rcustomerEmail\"\x88\x02\n" +
 	"\x0fPaymentResponse\x12\x1d\n" +
 	"\n" +
 	"payment_id\x18\x01 \x01(\tR\tpaymentId\x12\x19\n" +
@@ -270,7 +287,8 @@ const file_payment_v1_payment_proto_rawDesc = "" +
 	"\x0etransaction_id\x18\x03 \x01(\tR\rtransactionId\x12\x16\n" +
 	"\x06amount\x18\x04 \x01(\x03R\x06amount\x12\x16\n" +
 	"\x06status\x18\x05 \x01(\tR\x06status\x12=\n" +
-	"\fprocessed_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\vprocessedAt\"S\n" +
+	"\fprocessed_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\vprocessedAt\x12%\n" +
+	"\x0ecustomer_email\x18\a \x01(\tR\rcustomerEmail\"S\n" +
 	"\x13ListPaymentsRequest\x12\x1d\n" +
 	"\n" +
 	"min_amount\x18\x01 \x01(\x03R\tminAmount\x12\x1d\n" +
